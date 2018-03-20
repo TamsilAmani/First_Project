@@ -1,0 +1,64 @@
+import java.io.*;
+public class Moore_Machine {
+    public static void main(String args[]) throws Exception{
+        System.out.println("----VALUES AS READ FROM THE FILE----\n");
+        FileReader fr = new FileReader("E:\\Work\\IntelliJ Idea Projects\\src\\InputMoore.txt");
+        BufferedReader br = new BufferedReader(fr);
+
+        int startS = Integer.parseInt(br.readLine());
+
+        String inputs[] = br.readLine().split(",");
+
+        int q = Integer.parseInt(br.readLine());
+
+        int mat[][] = new int[q][inputs.length+1];
+
+        for(int i=0; i<q ; i++){
+            String str[] = br.readLine().split(" ");
+            int cnt=0;
+
+            for(int j=0; j<inputs.length+1; j++){
+                mat[i][j] = Integer.parseInt(str[cnt++]);
+            }
+
+        }
+
+        System.out.println("Start State = " + startS);
+        System.out.print("\nInputs = ");
+        for (String x : inputs)
+            System.out.print(x + ",");
+
+        System.out.println("\nTransition Matrix : \n");
+        for(int i=0; i<q; i++) {
+            for (int j = 0; j < inputs.length + 1; j++)
+                System.out.print(mat[i][j] + " ");
+            System.out.println();
+        }
+
+        System.out.println("\n-------------------------------");
+        System.out.println("Enter sentence :");
+        String sent = new BufferedReader(new InputStreamReader(System.in)).readLine();
+
+        String sum= Integer.toString(mat[startS][inputs.length]);
+        for(int i=0;i<sent.length();i++){
+            startS = nextState(startS, sent.charAt(i), mat, inputs);
+            sum += mat[startS][inputs.length];
+
+
+        }
+
+        System.out.println("Output is : "+ sum);
+
+    }
+
+    static int nextState(int startS, char s , int mat[][], String inputs[]){
+
+        for(int i=0;i<inputs.length;i++){
+            if(inputs[i].equals(s+"")){
+                return mat[startS][i];
+            }
+
+        }
+        return -1;
+    }
+}
