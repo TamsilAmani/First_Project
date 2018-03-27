@@ -1,0 +1,157 @@
+import java.io.*;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+public class Follow {
+    public static void main(String args[]) throws Exception {
+
+        FileReader fr = new FileReader("E:\\Work\\IntelliJ Idea Projects\\src\\InputFirst");
+        BufferedReader br = new BufferedReader(fr);
+
+        int noP = Integer.parseInt(br.readLine());
+        String sent[] = new String[noP];
+
+        for (int i = 0; i < noP; i++)
+            sent[i] = br.readLine();
+
+        String out[] = new String[noP+1];
+        out[noP]="~";
+
+
+        for (int i = 0; i < noP; i++) {
+            String s[] = sent[i].split("->");
+            String right = s[0];
+            String left = s[1];
+
+            //System.out.println("----------------\n"+" s[0] = "+right+" s[1] = "+left+"\n\n");
+
+            out[i] = right;
+
+            boolean t = true;
+
+            one:
+            while (Character.isUpperCase(left.charAt(0)) == true) {
+                t = false;
+                char fchar = left.charAt(0);
+                //System.out.println("fchar = "+fchar);
+                String temp[];
+                for (int j = 0; j < noP; j++) {
+                    if (j != i) {
+                        temp = sent[j].split("->");
+                        if (temp[0].charAt(0) == fchar) {
+                            //System.out.println("temp[0] here is : "+ temp[0]);
+                            left = temp[1];
+                            if (Character.isUpperCase(left.charAt(0))) {
+                                //System.out.println("Jumpinh to while");
+                                continue one;
+                            }
+                            else
+                                out[i] += left.charAt(0);
+                        }
+
+                    }
+
+                }
+            }
+            if (t)
+                out[i] += left.charAt(0);
+
+        }
+
+        /*Arrays.sort(out);
+        for (String x : out)
+            System.out.println(x);
+
+        System.out.println("--------------------"); */
+
+
+
+        int strlen =0;
+
+
+        boolean f = false; String temp="";
+        for (int i = 0; i < noP; i++) {
+            if (f == false) {
+                //System.out.print(out[i].charAt(0) + " ");
+                f = true;
+                strlen++;
+            }
+
+            if (out[i].charAt(0) == out[i + 1].charAt(0));
+                //temp += out[i].substring(1) + out[i + 1].substring(1);
+            else if (out[i].charAt(0) != out[i + 1].charAt(0)) {
+                //temp += out[i].substring(1);
+                //System.out.print(remDup(temp) + "\n");
+                //temp="";
+                f = false;
+            }
+
+        }
+
+        String fir[] = new String[strlen];
+        strlen=-1;
+        f = false; temp="";
+        for (int i = 0; i < noP; i++) {
+            if (f == false) {
+                strlen++;
+                fir[strlen] = out[i].charAt(0) + " ";
+                f = true;
+            }
+
+            if (out[i].charAt(0) == out[i + 1].charAt(0))
+                temp += out[i].substring(1) + out[i + 1].substring(1);
+            else if (out[i].charAt(0) != out[i + 1].charAt(0)) {
+                temp += out[i].substring(1);
+                fir[strlen] = fir[strlen]+remDup(temp);
+                temp="";
+                f = false;
+            }
+
+        }
+        System.out.println("----------------------------");
+        for(String x : fir)
+            System.out.println(x);
+
+    // FOLLOW Calculations!
+
+        for(int i=0; i<strlen; i++){
+            char A = fir[i].charAt(0);
+            String t[];
+            for(int j=0; j<noP; j++){
+                t = sent[i].split("->");
+                if(t[1].indexOf('A')){
+
+
+
+                }
+
+
+            }
+
+        }
+
+
+
+    }
+
+    static String remDup(String x){
+        String string = x;
+
+        char[] chars = string.toCharArray();
+
+        Set<Character> charSet = new LinkedHashSet<Character>();
+        for (char c : chars) {
+            charSet.add(c);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Character character : charSet) {
+            sb.append(character);
+        }
+
+        return sb.toString();
+
+
+    }
+}
